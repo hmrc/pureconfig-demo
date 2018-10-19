@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +12,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import config.AppConfig
-@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+package config
 
-@main_template(title = s"Hello from ${appConfig.appName}", bodyClasses = None) {
-    <h1>Hello from @{appConfig.appName}!</h1>
+import org.scalatest.{MustMatchers, WordSpec}
+
+class AppConfigSpec extends WordSpec with MustMatchers {
+
+  val cfg = pureconfig.loadConfigOrThrow[AppConfig]
+
+  "app config" should {
+    "parse camelCase config property for appName" in {
+      cfg.appName must be("pureconfig-demo")
+    }
+
+    "parse kebab-case config property for contact-frontend" in {
+      cfg.contactFrontend.host must be("http://localhost:9250")
+    }
+  }
+
 }

@@ -16,9 +16,21 @@
 
 package config
 
-case class AppConfig(contactFrontend: ContactFrontend = ContactFrontend(),
+import pureconfig.{CamelCase, ConfigFieldMapping, KebabCase, ProductHint}
+
+case class AppConfig(appName: String,
+                     contactFrontend: ContactFrontend = ContactFrontend(),
                      assets: Assets = Assets(),
                      googleAnalytics: GoogleAnalytics = GoogleAnalytics())
+
+object AppConfig {
+  implicit val appNameHint: ProductHint[AppConfig] = ProductHint(new ConfigFieldMapping {
+    def apply(fieldName: String): String = fieldName match {
+      case "appName" => fieldName
+      case _ => KebabCase.fromTokens(CamelCase.toTokens(fieldName))
+    }
+  })
+}
 
 case class ContactFrontend(host: String = "http://localhost:9250", serviceIdentifier: String = "MyService") {
   lazy val reportAProblemPartialUrl = s"$host/contact/problem_reports_ajax?service=$serviceIdentifier"

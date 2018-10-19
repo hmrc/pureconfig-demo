@@ -1,0 +1,6 @@
+@import uk.gov.hmrc.pureconfigdemo.config.AppConfig
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@main_template(title = "Hello from pureconfig-demo", bodyClasses = None) {
+    <h1>Hello from pureconfig-demo !</h1>
+}

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import config.AppConfig
-@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+import com.google.inject.{AbstractModule, Provides}
+import config.AppConfig
+import javax.inject.Singleton
 
-@main_template(title = "Hello from pureconfig-demo", bodyClasses = None) {
-    <h1>Hello from pureconfig-demo!</h1>
+class Module extends AbstractModule {
+
+  override def configure(): Unit = {}
+
+  @Provides @Singleton
+  def appConfig(): AppConfig = pureconfig.loadConfigOrThrow[AppConfig]
+
 }

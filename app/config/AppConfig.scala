@@ -58,4 +58,4 @@ case class Microservice(services: Services = Services())
 case class Services(pureconfigDemo: PureconfigDemo = PureconfigDemo())
 
 // the whole "feature map" value will be overwritten if feature block defined in application.conf
-case class PureconfigDemo(features: Map[String, String] = Map("quix" -> "enabled"))
+case class PureconfigDemo(features: Map[String, String] = Map("quix" -> "enabled"), someArray: Seq[Int] = Seq.empty)

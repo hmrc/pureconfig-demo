@@ -34,6 +34,10 @@ class AppConfigSpec extends WordSpec with MustMatchers {
     "parse map of features" in {
       cfg.microservice.services.pureconfigDemo.features("foo") must be("enabled")
     }
+
+    "parse sequence of ints" in {
+      cfg.microservice.services.pureconfigDemo.someArray must be(Seq(42, 24))
+    }
   }
 
 }

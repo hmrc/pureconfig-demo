@@ -15,8 +15,10 @@
  *@
 
 @import config.AppConfig
+@import play.api.libs.json.Json
 @()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @main_template(title = s"Hello from ${appConfig.appName}", bodyClasses = None) {
     <h1>Hello from @{appConfig.appName}!</h1>
+    <pre>@{Json.prettyPrint(Json.toJson(appConfig))}</pre>
 }

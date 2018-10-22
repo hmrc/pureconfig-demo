@@ -16,12 +16,14 @@
 
 package config
 
+import play.api.libs.json._
 import pureconfig.{CamelCase, ConfigFieldMapping, KebabCase, ProductHint}
 
 case class AppConfig(appName: String,
                      contactFrontend: ContactFrontend = ContactFrontend(),
                      assets: Assets = Assets(),
-                     googleAnalytics: GoogleAnalytics = GoogleAnalytics())
+                     googleAnalytics: GoogleAnalytics = GoogleAnalytics(),
+                     microservice: Microservice = Microservice())
 
 object AppConfig {
   implicit val appNameHint: ProductHint[AppConfig] = ProductHint(new ConfigFieldMapping {
@@ -30,6 +32,14 @@ object AppConfig {
       case _ => KebabCase.fromTokens(CamelCase.toTokens(fieldName))
     }
   })
+  // JSON formats ... just so we can pretty-print cfg out to screen (not required for pureconfig)
+  implicit val pureconfigDemoFormat: OFormat[PureconfigDemo] = Json.format[PureconfigDemo]
+  implicit val servicesFormat: OFormat[Services] = Json.format[Services]
+  implicit val microserviceFormat: OFormat[Microservice] = Json.format[Microservice]
+  implicit val googleAnalyticsFormat: OFormat[GoogleAnalytics] = Json.format[GoogleAnalytics]
+  implicit val assetsFormat: OFormat[Assets] = Json.format[Assets]
+  implicit val contactFrontendFormat: OFormat[ContactFrontend] = Json.format[ContactFrontend]
+  implicit val appConfigFormat: OFormat[AppConfig] = Json.format[AppConfig]
 }
 
 case class ContactFrontend(host: String = "http://localhost:9250", serviceIdentifier: String = "MyService") {
@@ -42,3 +52,10 @@ case class Assets(version: String = "2.149.0", url: String = "http://localhost:9
 }
 
 case class GoogleAnalytics(token: String = "N/A", host: String = "auto")
+
+case class Microservice(services: Services = Services())
+
+case class Services(pureconfigDemo: PureconfigDemo = PureconfigDemo())
+
+// the whole "feature map" value will be overwritten if feature block defined in application.conf
+case class PureconfigDemo(features: Map[String, String] = Map("quix" -> "enabled"))

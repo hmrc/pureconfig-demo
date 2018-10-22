@@ -30,6 +30,10 @@ class AppConfigSpec extends WordSpec with MustMatchers {
     "parse kebab-case config property for contact-frontend" in {
       cfg.contactFrontend.host must be("http://localhost:9250")
     }
+
+    "parse map of features" in {
+      cfg.microservice.services.pureconfigDemo.features("foo") must be("enabled")
+    }
   }
 
 }

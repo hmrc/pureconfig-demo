@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-import com.google.inject.{AbstractModule, Provides}
-import config.{AppConfig, GoogleAnalytics}
-import javax.inject.Singleton
+package services
 
-class Module extends AbstractModule {
+import config.GoogleAnalytics
+import javax.inject.{Inject, Singleton}
 
-  val cfg = pureconfig.loadConfigOrThrow[AppConfig]
-
-  override def configure(): Unit = {}
-
-  @Provides @Singleton
-  def appConfig: AppConfig = cfg
-
-  @Provides @Singleton
-  def googleAnalytics: GoogleAnalytics = cfg.googleAnalytics
-
-}
+@Singleton
+class HelloWorldService @Inject()(val googleAnalytics: GoogleAnalytics)

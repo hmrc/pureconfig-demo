@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import com.google.inject.{AbstractModule, Provides}
-import config.{AppConfig, GoogleAnalytics}
-import javax.inject.Singleton
+package services
 
-class Module extends AbstractModule {
+import config.AppConfig
+import org.scalatestplus.play.{OneAppPerSuite, PlaySpec}
 
-  val cfg = pureconfig.loadConfigOrThrow[AppConfig]
+class HelloWorldServiceSpec extends PlaySpec with OneAppPerSuite {
 
-  override def configure(): Unit = {}
+  val service = app.injector.instanceOf[HelloWorldService]
+  val cfg = app.injector.instanceOf[AppConfig]
 
-  @Provides @Singleton
-  def appConfig: AppConfig = cfg
-
-  @Provides @Singleton
-  def googleAnalytics: GoogleAnalytics = cfg.googleAnalytics
+  "the service" should {
+    "be injected with application config specific type" in {
+      service.googleAnalytics must be(cfg.googleAnalytics)
+    }
+  }
 
 }

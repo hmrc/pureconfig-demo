@@ -17,7 +17,7 @@
 package services
 
 import config.GoogleAnalytics
-import javax.inject.{Inject, Singleton}
+import javax.inject.{Inject, Named, Qualifier, Singleton}
 
 @Singleton
-class HelloWorldService @Inject()(val googleAnalytics: GoogleAnalytics)
+class HelloWorldService @Inject()(val googleAnalytics: GoogleAnalytics, @Named("someArray") val someArray: Seq[Int])

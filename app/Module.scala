@@ -16,7 +16,7 @@
 
 import com.google.inject.{AbstractModule, Provides}
 import config.{AppConfig, GoogleAnalytics}
-import javax.inject.Singleton
+import javax.inject.{Named, Singleton}
 
 class Module extends AbstractModule {
 
@@ -29,5 +29,8 @@ class Module extends AbstractModule {
 
   @Provides @Singleton
   def googleAnalytics: GoogleAnalytics = cfg.googleAnalytics
+
+  @Provides @Singleton @Named("someArray")
+  def someArray: Seq[Int] = cfg.microservice.services.pureconfigDemo.someArray
 
 }

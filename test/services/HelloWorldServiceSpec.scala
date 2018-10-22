@@ -28,6 +28,10 @@ class HelloWorldServiceSpec extends PlaySpec with OneAppPerSuite {
     "be injected with application config specific type" in {
       service.googleAnalytics must be(cfg.googleAnalytics)
     }
+
+    "be injected with named generic type" in {
+      service.someArray must be(cfg.microservice.services.pureconfigDemo.someArray)
+    }
   }
 
 }

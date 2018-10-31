@@ -16,7 +16,9 @@
 
 package config
 
-import play.api.libs.json._
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.auto._
+import eu.timepit.refined.numeric.Positive
 import pureconfig.{CamelCase, ConfigFieldMapping, KebabCase, ProductHint}
 
 case class AppConfig(appName: String,
@@ -32,14 +34,6 @@ object AppConfig {
       case _ => KebabCase.fromTokens(CamelCase.toTokens(fieldName))
     }
   })
-  // JSON formats ... just so we can pretty-print cfg out to screen (not required for pureconfig)
-  implicit val pureconfigDemoFormat: OFormat[PureconfigDemo] = Json.format[PureconfigDemo]
-  implicit val servicesFormat: OFormat[Services] = Json.format[Services]
-  implicit val microserviceFormat: OFormat[Microservice] = Json.format[Microservice]
-  implicit val googleAnalyticsFormat: OFormat[GoogleAnalytics] = Json.format[GoogleAnalytics]
-  implicit val assetsFormat: OFormat[Assets] = Json.format[Assets]
-  implicit val contactFrontendFormat: OFormat[ContactFrontend] = Json.format[ContactFrontend]
-  implicit val appConfigFormat: OFormat[AppConfig] = Json.format[AppConfig]
 }
 
 case class ContactFrontend(host: String = "http://localhost:9250", serviceIdentifier: String = "MyService") {
@@ -58,4 +52,4 @@ case class Microservice(services: Services = Services())
 case class Services(pureconfigDemo: PureconfigDemo = PureconfigDemo())
 
 // the whole "feature map" value will be overwritten if feature block defined in application.conf
-case class PureconfigDemo(features: Map[String, String] = Map("quix" -> "enabled"), someArray: Seq[Int] = Seq.empty)
+case class PureconfigDemo(features: Map[String, String] = Map("quix" -> "enabled"), someArray: Seq[Int] = Seq.empty, positiveInt: Int Refined Positive = 24)

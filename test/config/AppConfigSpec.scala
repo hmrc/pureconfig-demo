@@ -16,7 +16,10 @@
 
 package config
 
+import com.typesafe.config.ConfigFactory
 import org.scalatest.{MustMatchers, WordSpec}
+import eu.timepit.refined.pureconfig._
+import pureconfig.error.ConfigReaderException
 
 class AppConfigSpec extends WordSpec with MustMatchers {
 
@@ -37,6 +40,25 @@ class AppConfigSpec extends WordSpec with MustMatchers {
 
     "parse sequence of ints" in {
       cfg.microservice.services.pureconfigDemo.someArray must be(Seq(42, 24))
+    }
+
+    "fail refined validation given negative int" in {
+      val config = ConfigFactory.parseString(
+        """
+          |appName = foo
+          |microservice {
+          | services {
+          |   pureconfig-demo {
+          |     positive-int = -1
+          |   }
+          |  }
+          |}
+        """.stripMargin)
+      val ex = intercept[ConfigReaderException[_]] {
+        pureconfig.loadConfigOrThrow[AppConfig](config)
+      }
+      ex.failures.toList.size must be(1)
+      ex.failures.toList.head.description must include("Cannot convert '-1'")
     }
   }
 

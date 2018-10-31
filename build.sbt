@@ -20,6 +20,8 @@ libraryDependencies ++= Seq(
   "uk.gov.hmrc" %% "play-ui" % "7.22.0",
   "uk.gov.hmrc" %% "bootstrap-play-25" % "3.11.0",
   "com.github.pureconfig" %% "pureconfig" % "0.9.2",
+  "eu.timepit" %% "refined" % "0.9.2",
+  "eu.timepit" %% "refined-pureconfig" % "0.9.2",
 
   "org.scalatest" %% "scalatest" % "3.0.4" % "test",
   "org.jsoup" % "jsoup" % "1.10.2" % "test",
